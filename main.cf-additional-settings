@@ -1,0 +1,5 @@
+
+# Settings that configure the relay to the destination server
+relay_domains = destination.test, origin.test
+transport_maps = hash:/etc/postfix/transport-maps
+relay_recipient_maps = hash:/etc/postfix/relay-recipient-maps

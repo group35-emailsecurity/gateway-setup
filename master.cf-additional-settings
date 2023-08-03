@@ -1,0 +1,7 @@
+
+# Content filter settings
+filter    unix  -       n       n       -       10      pipe
+    flags=Rq user=user null_sender=
+    argv=/etc/postfix/filter-handler.sh -f ${sender} -- ${recipient}
+smtp      inet  n       -       y       -       -       smtpd
+        -o content_filter=filter:dummy
