@@ -52,7 +52,7 @@
 
 # Web App
 ## Accessing the web app
-- Enter the 'webapp' directory and run the abcdefg.py file: `python abcdefg.py`  _TO DO: file name_
+- Enter the 'webapp' directory and run the start.py file: `python start.py`
 
 ## Running the web app
 - _TO DO: web app instructions_
