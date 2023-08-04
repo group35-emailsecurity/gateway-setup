@@ -3,3 +3,11 @@
 relay_domains = destination.test, origin.test
 transport_maps = hash:/etc/postfix/transport-maps
 relay_recipient_maps = hash:/etc/postfix/relay-recipient-maps
+
+# TLS inbound settings
+smtpd_tls_loglevel = 1
+smtpd_tls_security_level = may
+
+# TLS outbound settings
+smtp_tls_loglevel = 1
+smtp_tls_security_level = encrypt

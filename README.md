@@ -3,8 +3,11 @@
 - The device hostnames should be origin.test, gateway.test, destination.test  
 - origin.test and gateway.test should each have a user called 'user'.  
 - destination.test should have a user called 'user1' (the destination - like an organisation - can have multiple users).  
-- Emails sent from user@origin.test to user1@destination.test (and vice versa) will pass through the gateway device for filtering. 
-- Each email that passes through gateway device is stored and can be viewed via a web app (including both allowed and denied emails).
+- Emails sent from user@origin.test to user1@destination.test will pass through the gateway device for filtering. 
+- Each email that is filtered by the gateway device is stored and can be viewed via a web app (this includes both allowed and denied emails).
+- Additionally, if the protected destination device were to send outbound emails:
+    - A TLS connection is enforced for outbound emails in transit between the gateway device and any external server.  
+    - _TO DO: encryption of email content_
 
 # Setup
 ## Configure Gateway server
@@ -29,8 +32,7 @@
 - Login as user.  
 - Install Postfix: `sudo apt install postfix`. Choose the 'Internet Site' option, and enter 'origin.test' as the domain.  
 - Ensure emails sent from the origin server to @destination.test email addresses are routed through the gateway server by adding the following line to the /etc/hosts file: `<GATEWAY SERVER IP ADDRESS>    destination.test` (where \<GATEWAY SERVER IP ADDRESS> is the IP address of the gateway server).  
-- Open Claws Mail and configure as follows: Email address should be user@origin.test. Server type should be 'Local mbox file'. SMTP server address should be 'destination.test'.  
-- _TO DO: configure encryption instructions_
+- Open Claws Mail and configure as follows: Email address should be user@origin.test. Server type should be 'Local mbox file'. SMTP server address should be 'destination.test'.
 
 ## Configure Destination server
 - Set a static IP address by editing the /etc/dhcpcd.conf file. Uncomment and edit the 'Example static IP configuration' section.  
@@ -39,8 +41,7 @@
 - Login as user1.   
 - Install Postfix: `sudo apt install postfix`. Choose the 'Internet Site' option, and enter 'destination.test' as the domain.  
 - Ensure emails sent from the destination server to @origin.test email addresses are routed through the gateway server by adding the following line to the /etc/hosts file: `<GATEWAY SERVER IP ADDRESS>    origin.test` (where \<GATEWAY SERVER IP ADDRESS> is the IP address of the gateway server).  
-- Open Claws Mail and configure as follows:  Email address should be user1@destination.test. Server type should be 'Local mbox file'. SMTP server address should be 'origin.test'.  
-- _TO DO: configure encryption instructions_
+- Open Claws Mail and configure as follows:  Email address should be user1@destination.test. Server type should be 'Local mbox file'. SMTP server address should be 'origin.test'.
 
 ## Send emails from Origin server
 - Login as 'user' on the origin server.  
