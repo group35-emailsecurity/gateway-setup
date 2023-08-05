@@ -1,2 +1,2 @@
-user1@destination.test x
-user@origin.test x
+user1@internal.test x
+user@external.test x

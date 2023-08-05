@@ -1,2 +1,2 @@
-destination.test smtp:[<DESTINATION SERVER IP ADDRESS>]:25
-origin.test smtp:[<ORIGIN SERVER IP ADDRESS>]:25
+internal.test smtp:[<INTERNAL SERVER IP ADDRESS>]:25
+external.test smtp:[<EXTERNAL SERVER IP ADDRESS>]:25

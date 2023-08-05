@@ -1,6 +1,6 @@
 
-# Settings that configure the relay to the destination server
-relay_domains = destination.test, origin.test
+# Gateway relay settings
+relay_domains = internal.test, external.test
 transport_maps = hash:/etc/postfix/transport-maps
 relay_recipient_maps = hash:/etc/postfix/relay-recipient-maps
 
