@@ -14,12 +14,12 @@ class Outcome(Enum):
 
 email = sys.stdin.read()
 keywordBlacklist = ["casino", "lottery", "viagra"]
-emailStatus = Outcome.ALLOWED.name
+emailOutcome = Outcome.ALLOWED.name
 exitCode = Outcome.ALLOWED.value
 
 for keyword in keywordBlacklist:
 	if re.search(keyword, email, re.IGNORECASE):
-		emailStatus = Outcome.DENIED.name
+		emailOutcome = Outcome.DENIED.name
 		exitCode = Outcome.DENIED.value
 		print("The word %s was found in the email." % keyword)
 		break
@@ -27,6 +27,6 @@ for keyword in keywordBlacklist:
 if exitCode == Outcome.ALLOWED.value:
 	print("The email body did not contain any suspicious words.")
 
-# TODO: Write 'email' string variable to binary file & write its offsets and 'emailStatus' variable to an index file
+# TODO: Write 'email' string variable to binary file & write its offsets and 'emailOutcome' variable to an index file
 
 sys.exit(exitCode)
