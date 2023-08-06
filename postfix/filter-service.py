@@ -2,19 +2,31 @@
 
 import sys
 import re
+from enum import Enum
 
 # This script must return an exit code of 0 or 1
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
 # Exit code 1: Threat detected. This exit code will result in the email being discarded.
 
-# TODO: We can filter the email and create logs here (Note: the email is available via stdin and can be parsed line by line, as shown below)
+class Outcome(Enum):
+	ALLOWED = 0
+	DENIED = 1
 
-for line in sys.stdin:
-	if re.search(r'viagra', line, re.IGNORECASE):
-		print('The word "viagra" was found in the email.')
-		# Exit with code 1
-		sys.exit(1)
+email = sys.stdin.read()
+keywordBlacklist = ["casino", "lottery", "viagra"]
+emailStatus = Outcome.ALLOWED.name
+exitCode = Outcome.ALLOWED.value
 
-print('The email body did not contain any suspicious words.')
-# Exit with code 0
-sys.exit(0)
+for keyword in keywordBlacklist:
+	if re.search(keyword, email, re.IGNORECASE):
+		emailStatus = Outcome.DENIED.name
+		exitCode = Outcome.DENIED.value
+		print("The word %s was found in the email." % keyword)
+		break
+
+if exitCode == Outcome.ALLOWED.value:
+	print("The email body did not contain any suspicious words.")
+
+# TODO: Write 'email' string variable to binary file & write its offsets and 'emailStatus' variable to an index file
+
+sys.exit(exitCode)
