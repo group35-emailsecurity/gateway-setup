@@ -7,7 +7,7 @@ temp_email_file=~/temp-email-file.tmp
 cat > $temp_email_file
 
 # Pass the temporary file into the content filter service
-/etc/postfix/filter-service.py < $temp_email_file
+/etc/postfix/filter-service/filter-service.py < $temp_email_file
 
 # Retrieve the exit code of the content filter service (0 = No threat detected, 1 = Threat detected)
 result=$?

@@ -2,6 +2,8 @@
 
 import sys
 import re
+from models.email import Email
+from models.log import Log
 from enum import Enum
 
 # This script must return an exit code of 0 or 1
