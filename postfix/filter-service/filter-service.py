@@ -18,17 +18,17 @@ email = sys.stdin.read()
 keywordBlacklist = ["casino", "lottery", "viagra"]
 emailOutcome = Outcome.ALLOWED.name
 exitCode = Outcome.ALLOWED.value
+logMessage = "The email body did not contain any suspicious words."
 
 for keyword in keywordBlacklist:
     if re.search(keyword, email, re.IGNORECASE):
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
-        print("The word %s was found in the email." % keyword)
+        logMessage = "The word %s was found in the email." % keyword
         break
 
-if exitCode == Outcome.ALLOWED.value:
-    print("The email body did not contain any suspicious words.")
-
 # TODO: Write 'email' string variable to binary file & write its offsets and 'emailOutcome' variable to an index file
+
+print(logMessage)
 
 sys.exit(exitCode)
