@@ -77,7 +77,7 @@
 
 ## PGP signing
 ### Configure Internal server
-- In Claws Mail. Navigate to Configuration -> Preferences for current account -> GPG. Select 'Select key by your email address'. 'Click 'Generate a new key pair'. Enter a passphrase, remember it. There is no need to export it to a key server.  
+- In Claws Mail, navigate to Configuration -> Preferences for current account -> GPG. Select 'Select key by your email address'. 'Click 'Generate a new key pair'. Enter a passphrase, remember it. There is no need to export it to a key server.  
 - In a terminal, run: `gpg --list-keys`. The copied fingerprint should be in the list of keys.  
 - Export the public key file by entering: `gpg --output ~/internal-public-key.pub --export [FINGERPRINT]` where [FINGERPRINT] is the fingerprint that was copied.  
 - For the purposes of this demo, email the public key file (internal-public-key.pub) as an attachment to user@external.test. Note that in reality, the public key should be shared via a 'web of trust', whereby multiple parties are in agreement that a public key belongs to a specific party.  
