@@ -66,7 +66,6 @@ def readFromBinaryFileToEmailList(readBinFilePath):
 
     return readEmailList
 
-
 def writeToBinaryFileFromLogList(writeBinFilePath, writeLogList):
     # Check if writeLogList contains records
     if(writeLogList != []):
@@ -125,7 +124,7 @@ def readFromBinaryFileToLogList(readBinFilePath):
 
     return readLogList
 
-def readLogListBinFileCount(readBinFilePath):
+def readListCount(readBinFilePath):
     count = 0
     # Try to open file if it exists
     if(os.path.isfile(readBinFilePath)):

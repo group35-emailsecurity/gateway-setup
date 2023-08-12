@@ -30,11 +30,33 @@ for keyword in keywordBlacklist:
         logMessage = "The word %s was found in the email." % keyword
         break
 
-# TODO: Write 'email' string variable to binary file & write its offsets and 'emailOutcome' variable to an index file
+# TODO: Add email to, from, subject and body from Email variable
+#################################### Create email record   ########################################
+# Create and Add Email record
+emailCount = utilities.readListCount('../../webapp/data/emails.bin')
+emailCount += 1
+emailId = emailCount
+emailToAddress = "to@Email.com"
+emailFromAddress = "from@Email.com"
+emailSubject = "I am an email subject"
+emailBody = "i am email body"
 
-########################### Create new Log Record #################################################
-# Create Log record
-logCount = utilities.readLogListBinFileCount('../../webapp/data/logs.bin')
+# Create Email Object
+emailRecord = Email(emailId, emailToAddress, emailFromAddress, emailSubject, emailBody)
+
+# Get current email records and add Email record to list
+emailList = []
+emailList = utilities.readFromBinaryFileToEmailList('../../webapp/data/emails.bin')
+emailList.append(emailRecord)
+
+# Write the updated Email List to bin file
+utilities.writeToBinaryFileFromEmailList('../../webapp/data/emails.bin')
+#################################### Create email record   ########################################
+
+# TODO: Add To, From and subject from Email variable
+#################################### Create new Log Record ########################################
+# Create and Add Log record
+logCount = utilities.readListCount('../../webapp/data/logs.bin')
 logCount += 1
 logId = logCount
 logDate = date.today()
@@ -53,7 +75,7 @@ logList.append(logRecord)
 
 # Write the updated Log List to bin file
 utilities.writeToBinaryFileFromLogList('../../webapp/data/logs.bin', logList)
-########################### Create new Log Record #################################################
+#################################### Create new Log Record ########################################
 
 print(logMessage)
 
