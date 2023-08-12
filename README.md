@@ -55,46 +55,47 @@
 ## PGP/MIME encryption procedure
 ### Configure External server
 - Install Claws Mail plugins: `sudo apt install claws-mail-plugins`  
-- In Claws Mail, nagivate to Configuration -> Plugins -> Load. Select: pgpmime.so and pgpcore.so. Close the Plugins window.  
-- Navigate to Configuration -> Preferences for current account -> GPG. Click 'Generate a new key pair'. Enter a passphrase, remember it. Copy the fingerprint. There is no need to export it to a key server.  
-- In a terminal, run: `gpg --list-keys`. The copied fingerprint should be in the list of keys.  
+- In Claws Mail, nagivate to Configuration -> Plugins -> Load. Select: pgpmime.so and pgpcore.so. Click Open.  
+- If you see the 'No PGP key found dialog' and are prompted to generate a new key pair, do it. Enter a passphrase, remember it. Copy the fingerprint. There is no need to export it to a key server. Close the Plugins window.  
+- If you weren't prompted to generate a new key pair, close the Plugins window and navigate to Configuration -> Preferences for current account -> GPG. Click 'Generate a new key pair'. Enter a passphrase, remember it. Copy the fingerprint. There is no need to export it to a key server.  
+- In a terminal, run: `gpg --list-keys`. The copied fingerprint belonging to user@external.test should be in the list of keys. If you forgot to copy it, copy it now.  
 - Export the public key file by entering: `gpg --output ~/external-public-key.pub --export [FINGERPRINT]` where [FINGERPRINT] is the fingerprint that was copied.  
-- For the purposes of this demo, email the public key file (external-public-key.pub) as an attachment to user1@internal.test. Note that in reality, the public key should be shared via a 'web of trust', whereby multiple parties are in agreement that a public key belongs to a specific party.  
+- For the purposes of this demo, email the public key file (external-public-key.pub) as an attachment to user1@internal.test. Note that in reality, the public key should be shared via a 'web of trust', whereby multiple parties are in agreement that the public key belongs to user@external.test.  
 
 ### Configure Internal server
 - Check the inbox for the email from the external user containing their public key. Save the file to the ~ home directory.  
 - In a terminal, import the public key into the local keyring by running: `gpg --import ~/external-public-key.pub`  
-- Run `gpg --list-keys` to confirm the external server's public key has been imported to the keyring.  
+- Run `gpg --list-keys` to confirm that the public key belonging to user@external.test has been imported into the keyring.  
 - Install Claws Mail plugins: `sudo apt install claws-mail-plugins`  
-- In Claws Mail, nagivate to Configuration -> Plugins -> Load. Select: pgpmime.so and pgpcore.so. Close the Plugins window.  
+- In Claws Mail, nagivate to Configuration -> Plugins -> Load. Select: pgpmime.so and pgpcore.so. If you see the 'No PGP key found dialog' and are prompted to generate a new key pair, click no. Close the Plugins window.  
 - Compose a new email addressed to user@external.test  
 - Select Options -> Privacy System -> PGP/MIME. Select Options -> Encrypt  
-- Send the email. Claws Mail will match the email's 'To' address (user@external.test) to that address' public key that was imported into the keyring. Click through the 'Encryption warning'. Click through the 'Encrypt to user (user@external.test)' prompt. The email will then be sent.  
+- Click 'Send' to send the email. Claws Mail will match the email's 'To' address (user@external.test) to that address' public key that was imported into the keyring. Click through the 'Encryption warning'. Click through the 'Encrypt to user (user@external.test)' prompt. The email will then be sent.  
 
 ### External server
 - The encrypted email should arrive in the external server's inbox. Open it and when prompted enter the passphrase that was chosen when creating the keys. The decrypted email contents should now be visible.    
-- The external user may be prompted again to enter their passphrase again to decrypt further emails during their session.  
+- The external user may be prompted to enter their passphrase again to decrypt further emails during their session.  
 
 ## PGP signing
 ### Configure Internal server
-- In Claws Mail, navigate to Configuration -> Preferences for current account -> GPG. Select 'Select key by your email address'. 'Click 'Generate a new key pair'. Enter a passphrase, remember it. There is no need to export it to a key server.  
-- In a terminal, run: `gpg --list-keys`. The copied fingerprint should be in the list of keys.  
+- In Claws Mail, navigate to Configuration -> Preferences for current account -> GPG. 'Click 'Generate a new key pair'. Enter a passphrase, remember it. Copy the fingerprint. There is no need to export it to a key server.  Select 'Select key by your email address'. Click Apply and OK to save and exit.  
+- In a terminal, run: `gpg --list-keys`. The copied fingerprint belonging to user1@internal.test should be in the list of keys. If you forgot to copy it, copy it now.  
 - Export the public key file by entering: `gpg --output ~/internal-public-key.pub --export [FINGERPRINT]` where [FINGERPRINT] is the fingerprint that was copied.  
-- For the purposes of this demo, email the public key file (internal-public-key.pub) as an attachment to user@external.test. Note that in reality, the public key should be shared via a 'web of trust', whereby multiple parties are in agreement that a public key belongs to a specific party.  
+- For the purposes of this demo, email the public key file (internal-public-key.pub) as an attachment to user@external.test. Note that in reality, the public key should be shared via a 'web of trust', whereby multiple parties are in agreement that the public key belongs to user1@internal.test.  
 
 ### Configure External server
 - Check the inbox for the email from the internal user containing their public key. Save the file to the ~ home directory.  
 - In a terminal, import the public key into the local keyring by running: `gpg --import ~/internal-public-key.pub`  
-- Run `gpg --list-keys` to confirm the internal server's public key has been imported to the keyring.  
+- Run `gpg --list-keys` to confirm that the public key belonging to user1@internal.test has been imported into the keyring.  
 
 ### Internal server
 - In Claws Mail, compose a new email addressed to user@external.test  
 - Select Options -> Privacy System -> PGP/MIME. Select Options -> Sign  
-- Send the email. When prompted, enter the passphrase chosen earlier. This will sign the email with the user1@internal.test private key. The email will then be sent.  
+- Click 'Send' to send the email. When prompted, enter the passphrase chosen earlier. This will sign the email with the user1@internal.test private key. The email will then be sent.  
 
 ### External server
 - In Claws Mail, check the inbox for the signed email from user1@internal.test. Select the email.  
-- At the bottom of the window, it should read 'This signature has not been checked'. Click the padlock next to this sentence. The text 'Good signature from user1 <user1@internal.test>' should appear, thus verifying that the email was signed with the user1@internal.test private key that pairs with the user1@internal.test public key in the external user's keyring.  
+- At the bottom of the window, it should read 'This signature has not been checked'. Click the padlock next to this dialog. The text 'Good signature from user1 <user1@internal.test>' should appear, thus verifying that the email was signed with the user1@internal.test private key that pairs with the user1@internal.test public key in the external user's keyring.  
 
 # Web App
 ## Accessing the web app
