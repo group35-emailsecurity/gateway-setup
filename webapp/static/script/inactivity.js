@@ -1,6 +1,6 @@
 function idleTimer() {
     var t;
-    //window.onload = resetTimer;
+    window.onload = resetTimer;
     window.onmousemove = resetTimer; // catches mouse movements
     window.onmousedown = resetTimer; // catches mouse movements
     window.onclick = resetTimer;     // catches mouse clicks
@@ -8,7 +8,7 @@ function idleTimer() {
     window.onkeypress = resetTimer;  //catches keyboard actions
 
     function logout() {
-        window.location.href = '/login.html';
+        document.location = '/login';
         alert("You have been logged out due to inactivity");
     }
 
