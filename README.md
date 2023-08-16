@@ -99,7 +99,8 @@
 
 # Web App
 ## Accessing the web app
-- Enter the 'webapp' directory and run the start.py file: `python start.py`
+- Enter the 'webapp' directory and run the 'flask run` to start the Web Application
 
 ## Running the web app
-- _TO DO: web app instructions_
+Once the Web App is running from the previous command, you can access the server in your browser either by clicking the link
+127.0.0.1:5000/ in the terminal, or typing this address into your preferred browser address bar
