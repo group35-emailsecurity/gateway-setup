@@ -99,7 +99,7 @@
 
 # Web App
 ## Accessing the web app
-- Enter the 'webapp' directory and run the 'flask run` to start the Web Application
+- Enter the 'webapp' directory and run the command 'flask run` to start the Web Application from a terminal, can be done from inside VS code terminal
 
 ## Running the web app
 Once the Web App is running from the previous command, you can access the server in your browser either by clicking the link
