@@ -104,3 +104,14 @@
 ## Running the web app
 Once the Web App is running from the previous command, you can access the server in your browser either by clicking the link
 127.0.0.1:5000/ in the terminal, or typing this address into your preferred browser address bar
+
+# Utilities file for reading/adding Email/Log records
+## Accessing utilities terminal menu
+- How to access the utilities menu?
+- Run 'python .\utilitiesMainMenu.py from 'gateway-setup\webapp\' folder OR
+- Run the python script from VS code, must be in 'gateway-setup\webapp' folder in VS Code Terminal
+- Option 1 -> Prints all email records saved to bin file in terminal
+- Option 2 -> Prints all log records saved to bin file in terminal
+- Option 3 -> Add 1 or more email records
+- Option 4 -> Add 1 or more log records
+- Option 5 -> Exit the program
