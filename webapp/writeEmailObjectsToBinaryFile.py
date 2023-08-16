@@ -2,7 +2,17 @@ import os
 import pickle
 from models.email import Email
 
-count = 0
+def displayAllEmailRecords(filePath):
+    emailList = readFromBinaryFileToEmailList(filePath)
+    
+    if(emailList == []):
+        print("No records to display")
+    else:
+        #Display list of email records saved
+        for email in emailList:
+            emailOutput = str(email.id) +  " " + email.toAddress + " " + email.fromAddress + " " + email.subject + " " + email.body
+            print(emailOutput)
+    
 
 def writeToBinaryFileFromEmailList(writeBinFilePath, writeEmailList):
     # Check if writeEmailList contains records
@@ -26,12 +36,6 @@ def readFromBinaryFileToEmailList(readBinFilePath):
             with open(readBinFilePath, "rb") as f:
                 readEmailList = pickle.load(f)
 
-                print("\n\nEmail list")
-                for email in readEmailList:
-                    count += 1
-                    emailOutput = str(email.id) +  " " + email.toAddress + " " + email.fromAddress + " " + email.subject + " " + email.body
-                    print(emailOutput)
-        
         return readEmailList
     else:
         print("File does NOT exist")
@@ -44,35 +48,38 @@ def readFromBinaryFileToEmailList(readBinFilePath):
 
     return readEmailList
 
-print("Welcome to email object utility program!")
+def getEmailListCount(filePath):
+    count = 0
+    emailList = readFromBinaryFileToEmailList(filePath)
+    
+    if(emailList != []):
+        #Count records stored in bin file
+        for email in emailList:
+            count += 1
+    
+    return count
 
-#Get Current Email Records
-emailList = readFromBinaryFileToEmailList('data/emails.bin')
+def addEmailRecord(filePath):
+    #Get Current Email Records
+    emailList = readFromBinaryFileToEmailList(filePath)
 
-userInput = str(input("Please press 'Y' to add an email object: "))
+    userInput = str(input("Please press 'Y' to add an email object: "))
 
-while userInput.lower() == "y":
-    if(userInput.lower() == "y"):
-        count += 1
-        emailId = count
-        emailToAddress = input("Please enter email to address: ")
-        emailFromAddress = input("Please enter email from address: ")
-        emailSubject = input("Please enter email subject: ")
-        emailBody = input("Please enter email body: ")
+    while userInput.lower() == "y":
+        if(userInput.lower() == "y"):
+            count = getEmailListCount(filePath)
+            count += 1
+            emailId = count
+            emailToAddress = input("Please enter email to address: ")
+            emailFromAddress = input("Please enter email from address: ")
+            emailSubject = input("Please enter email subject: ")
+            emailBody = input("Please enter email body: ")
 
-        newEmail = Email(emailId, emailToAddress, emailFromAddress, emailSubject, emailBody)
-        emailList.append(newEmail)
-        userInput = str(input("Please press 'Y' to add ANOTHER email object: "))
-    else:
-        break
+            newEmail = Email(emailId, emailToAddress, emailFromAddress, emailSubject, emailBody)
+            emailList.append(newEmail)
+            userInput = str(input("Please press 'Y' to add ANOTHER email object: "))
+        else:
+            break
 
-#Write new email records to bin file
-writeToBinaryFileFromEmailList("data/emails.bin", emailList)
-
-if(emailList == []):
-    print("No records to display")
-else:
-    #Display list of email records saved
-    for email in emailList:
-        emailOutput = str(email.id) +  " " + email.toAddress + " " + email.fromAddress + " " + email.subject + " " + email.body
-        print(emailOutput)
+        #Write new email records to bin file
+        writeToBinaryFileFromEmailList(filePath, emailList)
