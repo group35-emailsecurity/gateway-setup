@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import os
 import re
 import utilities
 from models.email import Email
@@ -8,6 +9,7 @@ from models.log import Log
 from datetime import date
 from datetime import time
 from enum import Enum
+from subprocess import run
 
 # This script must return an exit code of 0 or 1
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
@@ -23,12 +25,25 @@ emailOutcome = Outcome.ALLOWED.name
 exitCode = Outcome.ALLOWED.value
 logMessage = "The email body did not contain any suspicious words."
 
+# Keyword scanning
 for keyword in keywordBlacklist:
     if re.search(keyword, emailStr, re.IGNORECASE):
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
         logMessage = "The word %s was found in the email." % keyword
         break
+
+# Attachment scanning
+homeDir = os.environ['HOME']
+run(['ripmime', '-i', '-', '-d', 'attachments'], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
+scanResult = run(['clamscan', 'attachments'], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
+run(['rm', '-r', 'attachments'], cwd=homeDir)  # Delete extracted attachments
+infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
+
+if infectedCount != "0":
+    emailOutcome = Outcome.DENIED.name
+    exitCode = Outcome.DENIED.value
+    logMessage = "Infected attachment detected"
 
 # TODO: Add email to, from, subject and body from Email variable
 #################################### Create email record   ########################################
