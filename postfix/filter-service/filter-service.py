@@ -17,14 +17,14 @@ class Outcome(Enum):
     ALLOWED = 0
     DENIED = 1
 
-email = sys.stdin.read()
+emailStr = sys.stdin.read()
 keywordBlacklist = ["casino", "lottery", "viagra"]
 emailOutcome = Outcome.ALLOWED.name
 exitCode = Outcome.ALLOWED.value
 logMessage = "The email body did not contain any suspicious words."
 
 for keyword in keywordBlacklist:
-    if re.search(keyword, email, re.IGNORECASE):
+    if re.search(keyword, emailStr, re.IGNORECASE):
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
         logMessage = "The word %s was found in the email." % keyword
