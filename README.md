@@ -115,3 +115,12 @@ Once the Web App is running from the previous command, you can access the server
 - Option 3 -> Add 1 or more email records
 - Option 4 -> Add 1 or more log records
 - Option 5 -> Exit the program
+
+# DNS Server
+## Configure DNS Server
+- Install DNSmasq: `sudo apt install dnsmasq`
+- Navigate to /etc/dnsmasq.conf to edit and uncomment 'domain-needed', 'bogus-priv' and 'no-resolv'
+- To utilise Googles DNS server for their upstream nameservers, remove the line: '#server=/localnet/192.168.0.1'. Then replace it with: 'server=8.8.8.8' and 'server=8.8.4.4'
+- To improve the performance on DNS lookups, uncomment and change the cache size line to: 'cache-size=1000'
+- Save the file and restart DNSmasq: `sudo systemctl restart dnsmasq`
+- Check the status of DNSmasq to ensure it is now active: `sudo systemctl status dnsmasq`
