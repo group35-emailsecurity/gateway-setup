@@ -80,7 +80,7 @@ def getLogListCount(filePath):
 
 def addLogRecord(filePath):
     #Get Current Log Records
-    logList = readFromBinaryFileToLogList('data/logs.bin')
+    logList = readFromBinaryFileToLogList(filePath)
 
     userInput = str(input("Please press 'Y' to add an log record: "))
 
