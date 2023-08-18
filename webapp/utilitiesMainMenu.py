@@ -14,6 +14,16 @@ def addEmailRecord():
 def addLogRecord():
     writeLogObjectsToBinaryFile.addLogRecord('data/logs.bin')
 
+def validateInput(message):
+    while True:
+        try:
+            userInput = int(input(message))
+        except ValueError:
+            print("Not a valid number, please try again.")
+        else:
+            return userInput
+            break
+
 print("\nWelcome to utility program for creating records, please choose one of the following options")
 print("\nMain Menu")
 print("1. Display all email records")
@@ -22,16 +32,17 @@ print("3. Add email record")
 print("4. Add log record")
 print("5. Exit program")
 
-userInput = int(input("Enter menu selection number: "))
-while userInput != 5:
-    if(userInput != 5):
-        if(userInput == 1):
+menuOption = validateInput("Enter menu selection number: ")
+
+while menuOption != 5:
+    if(menuOption != 5):
+        if(menuOption == 1):
             displayAllEmailRecords()
-        elif(userInput == 2):
+        elif(menuOption == 2):
             displayAllLogRecords()
-        elif(userInput == 3):
+        elif(menuOption == 3):
             addEmailRecord()
-        elif(userInput == 4):
+        elif(menuOption == 4):
             addLogRecord()
         else:
             print("Invalid menu option, please try again")
@@ -43,5 +54,5 @@ while userInput != 5:
     print("3. Add email record")
     print("4. Add log record")
     print("5. Exit program")
-    userInput = int(input("Enter menu selection number: "))
+    menuOption = validateInput("Enter menu selection number: ")
 
