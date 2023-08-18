@@ -17,17 +17,31 @@ def displayAllEmailRecords(filePath):
 def writeToBinaryFileFromEmailList(writeBinFilePath, writeEmailList):
     # Check if writeEmailList contains records
     if(writeEmailList != []):
-        # Write list to existing bin file
-        with open(writeBinFilePath, "wb") as f:
-            pickle.dump(writeEmailList, f)
+        if(os.path.exists(writeBinFilePath)):
+            # Write list to existing bin file
+            with open(writeBinFilePath, "wb") as f:
+                pickle.dump(writeEmailList, f)
+        else:
+            doesDirectoryExist = os.path.exists(writeBinFilePath)
+            if not doesDirectoryExist:
+                print("Directory does NOT exist")
+                newDirectory = os.path.dirname(writeBinFilePath)
+                os.makedirs(newDirectory)
+                print("Directory has been created")
+
+            # Write list to new bin file
+            with open(writeBinFilePath, "wb") as f:
+                pickle.dump(writeEmailList, f)
+            
 
 def readFromBinaryFileToEmailList(readBinFilePath):
     global count
     readEmailList = []
 
     # Try to open file if it exists
-    if(os.path.isfile(readBinFilePath)):
+    if(os.path.exists(readBinFilePath)):
         print("File does exist")
+
         if(os.stat(readBinFilePath).st_size == 0):
             print("File is empty, cannot open file")
         else:
@@ -38,6 +52,13 @@ def readFromBinaryFileToEmailList(readBinFilePath):
 
         return readEmailList
     else:
+        newDirectory = os.path.dirname(readBinFilePath)
+        doesDirectoryExist = os.path.exists(newDirectory)
+        if not doesDirectoryExist:
+            print("Directory does NOT exist")
+            os.makedirs(newDirectory)
+            print("Directory has been created")
+            
         print("File does NOT exist")
         print("Creating new empty bin file")
 
@@ -83,3 +104,7 @@ def addEmailRecord(filePath):
 
         #Write new email records to bin file
         writeToBinaryFileFromEmailList(filePath, emailList)
+
+
+#readFromBinaryFileToEmailList('data/emails.bin')
+#displayAllEmailRecords('/data/emails.bin')

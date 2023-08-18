@@ -16,17 +16,30 @@ def displayAllLogRecords(filePath):
 def writeToBinaryFileFromLogList(writeBinFilePath, writeLogList):
     # Check if writeLogList contains records
     if(writeLogList != []):
-        # open new bin file
-        with open(writeBinFilePath, "wb") as f:
-            pickle.dump(writeLogList, f)
+        if(os.path.exists(writeBinFilePath)):
+            # Write list to existing bin file
+            with open(writeBinFilePath, "wb") as f:
+                pickle.dump(writeLogList, f)
+        else:
+            newDirectory = os.path.dirname(writeBinFilePath)
+            doesDirectoryExist = os.path.exists(newDirectory)
+            if not doesDirectoryExist:
+                print("Directory does NOT exist")
+                os.makedirs(newDirectory)
+                print("Directory has been created")
+
+            # Write list to new bin file
+            with open(writeBinFilePath, "wb") as f:
+                pickle.dump(writeLogList, f)
 
 def readFromBinaryFileToLogList(readBinFilePath):
     global count
     readLogList = []
 
     # Try to open file if it exists
-    if(os.path.isfile(readBinFilePath)):
+    if(os.path.exists(readBinFilePath)):
         print("File does exist")
+
         if(os.stat(readBinFilePath).st_size == 0):
             print("File is empty, cannot open file")
         else:
@@ -36,6 +49,13 @@ def readFromBinaryFileToLogList(readBinFilePath):
                 readLogList = pickle.load(f)
 
     else:
+        newDirectory = os.path.dirname(readBinFilePath)
+        doesDirectoryExist = os.path.exists(newDirectory)
+        if not doesDirectoryExist:
+            print("Directory does NOT exist")
+            os.makedirs(newDirectory)
+            print("Directory has been created")
+
         print("File does NOT exist")
         print("Creating new empty bin file")
 
@@ -85,3 +105,5 @@ def addLogRecord(filePath):
         #Write new log records to bin file
         writeToBinaryFileFromLogList(filePath, logList)
 
+#readFromBinaryFileToLogList('data/logs.bin')
+#displayAllLogRecords('/data/logs.bin')

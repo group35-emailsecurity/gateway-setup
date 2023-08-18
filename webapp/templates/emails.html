@@ -22,6 +22,7 @@
 {% block content %}
 <h3>Emails</h3>
 <div class="outer">
+  {% if emailData %}
   <input type="text" id="searchInput" placeholder="Search for emails..">
   <table id="table" class="table table-hover table-dark">
     <tr>
@@ -40,5 +41,8 @@
       {% endfor %}
     </tr>
   </table>
+  {% else %}
+  <p>There are no records to display</p>
+  {% endif %}
 </div>
 {% endblock %}
