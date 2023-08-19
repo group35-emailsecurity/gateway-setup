@@ -34,10 +34,10 @@ for keyword in keywordBlacklist:
         break
 
 # Attachment scanning
-homeDir = os.environ['HOME']
-run(['ripmime', '-i', '-', '-d', 'attachments'], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
-scanResult = run(['clamscan', 'attachments'], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
-run(['rm', '-r', 'attachments'], cwd=homeDir)  # Delete extracted attachments
+homeDir = "/home/user/"
+run(['ripmime', '-i', '-', '-d', 'attachments/'], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
+scanResult = run(['clamscan', 'attachments/'], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
+run(['rm', '-r', 'attachments/'], cwd=homeDir)  # Delete extracted attachments
 infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
 
 if infectedCount != "0":
