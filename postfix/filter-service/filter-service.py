@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+import email
+import re
 import sys
 import os
 import re
@@ -10,6 +11,7 @@ from datetime import date
 from datetime import time
 from enum import Enum
 from subprocess import run
+from email import policy
 
 # This script must return an exit code of 0 or 1
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
@@ -47,6 +49,31 @@ if infectedCount != "0":
 
 # TODO: Add email to, from, subject and body from Email variable
 #################################### Create email record   ########################################
+
+
+# Email in object form
+emailObj = email.message_from_string(emailStr)
+
+# Check and print "To" address
+emailToAddress = emailObj['To']
+
+
+# Check and print "Subject"
+emailSubject = emailObj['Subject']
+
+
+# Check and extract "From" address using regex
+fromDetails = emailObj['From']
+emailRegex = r'<([^>]+)>'
+emailFromAddress = re.search(emailRegex, fromDetails)
+    
+# Email in object form with each element (To, From, Subject, etc.) mapped to an object property.
+emailObj = email.message_from_string(emailStr, policy=email.policy.default)
+
+emailBody = emailObj.get_body(('plain',)).get_content()
+
+
+
 # Create and Add Email record
 emailCount = utilities.readListCount('../../webapp/data/emails.bin')
 emailCount += 1
