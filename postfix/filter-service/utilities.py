@@ -212,6 +212,5 @@ def addEmailRecord(filePath):
         #Write new email records to bin file
         writeToBinaryFileFromEmailList(filePath, emailList)
 
-
 #readFromBinaryFileToEmailList('../../webapp/data/emails.bin')
 #displayAllEmailRecords('../../webapp/data/emails.bin')
