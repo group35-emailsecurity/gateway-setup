@@ -25,7 +25,7 @@ def emails():
 
 @app.route('/logs')
 def logs():
-    headings = ("ID","Date","Time","To","From","Subject", "Message", "Action")
+    headings = ("ID","Date","Time","To","From","Subject", "Message", "Type", "Action")
     logData = writeLogObjectsToBinaryFile.readFromBinaryFileToLogList('data/logs.bin')
     return render_template('logs.html', logData = logData, headings = headings)
 

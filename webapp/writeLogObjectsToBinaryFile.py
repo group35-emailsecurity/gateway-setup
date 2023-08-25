@@ -10,7 +10,7 @@ def displayAllLogRecords(filePath):
     else:
         #Display list of log records saved
         for log in logList:
-            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " " + log.action
+            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " "  +  log.type + " " + log.action
             print(logOutput)
 
 def writeToBinaryFileFromLogList(writeBinFilePath, writeLogList):
@@ -95,8 +95,9 @@ def addLogRecord(filePath):
             logFrom = input("Please enter from address: ")
             logSubject = input("Please enter email subject: ")
             logMessage = input("Please enter enter log message: ")
+            logType = input("Please enter enter log message: ")
             logAction = input("Please enter the action taken: ")
-            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logAction)
+            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logType, logAction)
             logList.append(newLog)
             userInput = str(input("Please press 'Y' to add ANOTHER log record: "))
         else:
