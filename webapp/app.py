@@ -11,8 +11,10 @@ app = Flask(__name__)
        
 @app.route('/')
 def index():
-    pieChartData = {'Task' : 'Total emails', 'Allowed' : 234, 'Blocked' : 153, 'Quarantine' : 86}
-    barChartData = {'Task' : 'Threats found', 'Virus' : 57, 'Spam' : 56, 'Phishing' : 40}
+    #pieChartData = {'Task' : 'Total emails', 'Allowed' : 234, 'Blocked' : 153, 'Quarantine' : 86}
+    pieChartData = writeLogObjectsToBinaryFile.getLogListActionCount('data/logs.bin')
+    barChartData = writeLogObjectsToBinaryFile.getLogListTypeCount('data/logs.bin')
+    #barChartData = {'Task' : 'Threats found', 'Virus' : 57, 'Spam' : 56, 'Phishing' : 40}
     #print(data)
     
     return render_template('index.html', pieChartData = pieChartData, barChartData = barChartData)
