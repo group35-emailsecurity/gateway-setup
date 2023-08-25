@@ -6,9 +6,10 @@ class Log:
     fromAddress = ""
     subject = ""
     message = ""
+    type = ""
     action = ""
 
-    def __init__(self, id, date, time, toAddress, fromAddress, subject, message, action ):
+    def __init__(self, id, date, time, toAddress, fromAddress, subject, message, type, action ):
         self.id = id
         self.date = date
         self.time = time
@@ -16,4 +17,5 @@ class Log:
         self.fromAddress = fromAddress
         self.subject = subject
         self.message = message
+        self.type = type
         self.action = action
