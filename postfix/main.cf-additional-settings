@@ -13,9 +13,15 @@ smtp_tls_loglevel = 1
 smtp_tls_security_level = encrypt
 
 # SPF settings
-#policyd-spf_time_limit = 3600
-#smtpd_recipient_restrictions =
-#    permit_sasl_authenticated,
-#    permit_mynetworks,
-#    reject_unauth_destination,
-#    check_policy_service unix:private/policyd-spf
+policyd-spf_time_limit = 3600
+smtpd_recipient_restrictions =
+    permit_sasl_authenticated,
+    permit_mynetworks,
+    reject_unauth_destination,
+    check_policy_service unix:private/policyd-spf
+
+# DKIM settings
+#milter_default_action = accept
+#milter_protocol = 2
+#smtpd_milters = inet:localhost:8891
+#non_smtpd_milters = inet:localhost:8891

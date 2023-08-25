@@ -8,8 +8,8 @@ if [ $? -eq 0 ]; then
     apt purge postfix
 fi
 
-# Install programs
-apt install ripmime clamav postfix &&
+# Install packages
+apt -y install postfix postfix-policyd-spf-python ripmime clamav &&
 
 # Copy files required for the destination relay to work
 cp transport-maps relay-recipient-maps /etc/postfix &&
