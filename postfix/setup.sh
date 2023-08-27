@@ -9,7 +9,7 @@ dpkg --status "postfix" &> /dev/null
 
 # If Postfix is installed, uninstall it
 if [ $? -eq 0 ]; then
-    apt purge postfix
+    apt -y purge postfix
 fi
 
 # Check if Opdendkim is installed
@@ -17,7 +17,7 @@ dpkg --status "opendkim" &> /dev/null
 
 # If Opdendkim is installed, uninstall it
 if [ $? -eq 0 ]; then
-    apt purge opendkim
+    apt -y purge opendkim
 fi
 
 # Install packages
@@ -48,8 +48,8 @@ cat opendkim.conf-additional-settings >> /etc/opendkim.conf
 cat openkdim-defaults-additional-settings >> /etc/defaults/opendkim
 
 # Set IP addresses
-sed -i "s/<INTERNAL_SERVER_IP_ADDRESS>/$INTERNAL_IP/g" /etc/postfix/transportmaps /etc/opendkim.conf
-sed -i "s/<EXTERNAL_SERVER_IP_ADDRESS>/$EXTERNAL_IP/g" /etc/postfix/transportmaps
+sed -i "s/<INTERNAL_SERVER_IP_ADDRESS>/$INTERNAL_IP/g" /etc/postfix/transport-maps /etc/opendkim.conf
+sed -i "s/<EXTERNAL_SERVER_IP_ADDRESS>/$EXTERNAL_IP/g" /etc/postfix/transport-maps
 
 # Generate opendkim key
 opendkim-genkey -t -s mail -d internal.test
