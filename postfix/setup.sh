@@ -65,4 +65,4 @@ postmap /etc/postfix/relay-recipient-maps &&
 postfix reload &&
 
 # Start opendkim
-service opendkim start &&
+service opendkim start
