@@ -68,9 +68,9 @@ postfix reload &&
 service opendkim start
 
 # Reboot
-s=5
+s=10
 for i in $(seq $s -1 1); do
-    echo "Rebooting in: $i";
+    echo "Rebooting in $i";
     sleep 1;
 done;
 
