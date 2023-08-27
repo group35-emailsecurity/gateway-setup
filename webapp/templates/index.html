@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
+<link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
@@ -28,20 +29,20 @@
         var pieChartOptions = {
           title: 'Total emails',
           is3D: true,
-          width: 500,
-          height: 500,
-          colors: ['#008000','#FF0000','#FFA500']
+          // width: 500,
+          // height: 500,
+          colors: ['#8fb258','#192b33']
         };
 
         var barChartOptions = {
-          title: 'Types of threats Found',
-          width: 500,
-          height: 500,
-          legend: {position: "none"},
-          colors: ['red','blue','orange']
+          title: 'Types of threats detected',
+          // width: 500,
+          // height: 500,
+          // legend: {position: "none"},
+          colors: ['#8fb258','#fce44d','#192b33']
         };
 
-        var pieChart = new google.visualization.PieChart(document.getElementById('piechartId'));
+        var pieChart = new google.visualization.PieChart(document.getElementById('pieChartId'));
         pieChart.draw(pieChartData, pieChartOptions);
 
         var barChart = new google.visualization.BarChart(document.getElementById("barChartId"));
@@ -51,35 +52,69 @@
     <script src="{{ url_for('static', filename='script/inactivity.js')}}"></script>
 {% endblock %}
 {% block header %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Dashboard <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/emails">Emails</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logs">Logs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
+<div id="header-container">
+  <div id="header-text">
+      <h1>Welcome to Dashboard</h1>
+      <h2>Email Security</h2>
+      <h3>Team - 35</h3>
+  </div>
+  <div id="header-logo">
+      <img src="static/img/Logo.png" alt="Logo" class="logo">
+  </div>
+</div>
+
+<div id="menu">
+  <ul>
+      <li class="menuitem"><a href="/">Dashboard</a></li>
+      <li class="menuitem"><a href="/emails">Emails</a></li>
+      <li class="menuitem"><a href="/logs">Logs</a></li>
+      <li class="menuitem"><a href="/login">Login</a></li>
+  </ul>
+</div>
+
 {% endblock %}
 {% block content %}
-<h3>Dashboard</h3>
-    <table>
-        <tr>
-            <td>
-                <div id="piechartId"></div>
-            </td>
-            <td>
-                <div id="barChartId"></div>
-            </td>
-        </tr>
-    </table>
+
+<div id="Dashboard-container">
+
+  <div id="pieChartId" style="width:100%; max-width:600px; height:500px;">
+      <h2>Email Status</h2>
+  </div>
+  
+  <div id="barChartId" style="width:100%; max-width:600px; height:500px;">
+      <h2>Threat Detection Overview</h2>
+  </div>
+  
+  <!--TO DO-->
+  <!-- <div id="recipientChart" style="width:100%; max-width:600px; height:500px;">
+      <h2>Top Recipients</h2>
+  </div>
+
+  <div id="senderChart" style="width:100%; max-width:600px; height:500px;">
+      <h2>Top Senders</h2>
+  </div> -->
+
+  <!--TO DO-->
+  <!-- <div id="wordCloud" style="width:100%; max-width:600px; height:500px;">
+      <h2>Keywords and Threats Word Cloud</h2>
+  </div>
+
+  <div id="actionsByThreatTypeChart" style="width: 100%; max-width: 800px; height: 500px;">
+      <h2>Stacked Bar chart</h2>
+  </div> -->
+
+  <div class="social-buttons">
+      <!-- TO DO : Social media login buttons -->
+  </div>
+</div>
+
+<div class="footer">
+<p>&copy; 2023 Bad Security Inc. All rights reserved.</p>
+
+  <!--TO DO-->
+  <!-- <a href="privacy_policy.html">Privacy Policy</a> -->
+
+</div>
+
 {% endblock %}
