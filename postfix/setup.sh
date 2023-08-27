@@ -9,7 +9,7 @@ dpkg --status "postfix" &> /dev/null &&
 
 # If Postfix is installed, uninstall it
 if [ $? -eq 0 ]; then
-    apt -y purge postfix &&
+    apt -y purge postfix
 fi
 
 # Check if Opdendkim is installed
@@ -17,7 +17,7 @@ dpkg --status "opendkim" &> /dev/null &&
 
 # If Opdendkim is installed, uninstall it
 if [ $? -eq 0 ]; then
-    apt -y purge opendkim &&
+    apt -y purge opendkim
 fi
 
 # Install packages
