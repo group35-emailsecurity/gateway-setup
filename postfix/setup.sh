@@ -45,7 +45,7 @@ cat master.cf-additional-settings >> /etc/postfix/master.cf &&
 cat opendkim.conf-additional-settings >> /etc/opendkim.conf
 
 # Append additional settings to the opendkim config file
-cat openkdim-defaults-additional-settings >> /etc/defaults/opendkim
+cat openkdim-default-additional-settings >> /etc/default/opendkim
 
 # Set IP addresses
 sed -i "s/<INTERNAL_SERVER_IP_ADDRESS>/$INTERNAL_IP/g" /etc/postfix/transport-maps /etc/opendkim.conf
