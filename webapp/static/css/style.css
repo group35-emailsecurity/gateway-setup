@@ -2,6 +2,14 @@
 
 /*Header*/
 
+
+/*Changing the colour of DataTables Text*/
+div.dataTables_wrapper{ 
+    color: #ddd;
+}
+
+
+
 #header-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
