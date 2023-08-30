@@ -65,8 +65,15 @@ emailSubject = emailObj['Subject']
 # Check and extract "From" address using regex
 fromDetails = emailObj['From']
 emailRegex = r'<([^>]+)>'
-emailFromAddress = re.search(emailRegex, fromDetails)
-    
+
+match = re.search(emailRegex, fromDetails)
+
+if match:
+        emailFromAddress = match.group(1)
+else:
+        emailFromAddress = fromDetails # If regex extraction fails, use the original value
+
+   
 # Email in object form with each element (To, From, Subject, etc.) mapped to an object property.
 emailObj = email.message_from_string(emailStr, policy=email.policy.default)
 
