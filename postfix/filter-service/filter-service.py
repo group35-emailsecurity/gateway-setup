@@ -15,9 +15,11 @@ from subprocess import run
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
 # Exit code 1: Threat detected. This exit code will result in the email being discarded.
 
+
 class Outcome(Enum):
     ALLOWED = 0
     DENIED = 1
+
 
 emailStr = sys.stdin.read()
 keywordBlacklist = ["casino", "lottery", "viagra"]
@@ -35,10 +37,13 @@ for keyword in keywordBlacklist:
 
 # Attachment scanning
 homeDir = "/home/user/"
-run(['ripmime', '-i', '-', '-d', 'attachments/'], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
-scanResult = run(['clamscan', 'attachments/'], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
+run(['ripmime', '-i', '-', '-d', 'attachments/'], cwd=homeDir,
+    input=emailStr, text=True)  # Extract attachments
+scanResult = run(['clamscan', 'attachments/'], cwd=homeDir,
+                 capture_output=True, text=True).stdout  # Scan attachments
 run(['rm', '-r', 'attachments/'], cwd=homeDir)  # Delete extracted attachments
-infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
+# Get infected attachment count
+infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]
 
 if infectedCount != "0":
     emailOutcome = Outcome.DENIED.name
@@ -57,11 +62,13 @@ emailSubject = "I am an email subject"
 emailBody = "i am email body"
 
 # Create Email Object
-emailRecord = Email(emailId, emailToAddress, emailFromAddress, emailSubject, emailBody)
+emailRecord = Email(emailId, emailToAddress, emailFromAddress,
+                    emailSubject, emailBody, emailStr)
 
 # Get current email records and add Email record to list
 emailList = []
-emailList = utilities.readFromBinaryFileToEmailList('../../webapp/data/emails.bin')
+emailList = utilities.readFromBinaryFileToEmailList(
+    '../../webapp/data/emails.bin')
 emailList.append(emailRecord)
 
 # Write the updated Email List to bin file
@@ -81,7 +88,8 @@ logFrom = "admin@group35.com"
 logSubject = "Please meet in boardroom at 1PM"
 
 # Create Log object
-logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, emailOutcome)
+logRecord = Log(logId, logDate, logTime, logTo, logFrom,
+                logSubject, logMessage, emailOutcome)
 
 # Get current log records and add Log record to list
 logList = []
