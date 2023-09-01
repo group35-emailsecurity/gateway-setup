@@ -3,3 +3,4 @@ postfix/filter-service/models/__pycache__/log.cpython-311.pyc
 webapp/data/emails.bin
 webapp/data/logs.bin
 webapp/data/logs.bin
+postfix/filter-service/test-filter-service.py

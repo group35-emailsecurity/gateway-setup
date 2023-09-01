@@ -53,7 +53,7 @@ if infectedCount != "0":
 # TODO: Add email to, from, subject and body from Email variable
 #################################### Create email record   ########################################
 # Create and Add Email record
-emailCount = utilities.readListCount('../../webapp/data/emails.bin')
+emailCount = utilities.getEmailListCount('../../webapp/data/emails.bin')
 emailCount += 1
 emailId = emailCount
 emailToAddress = "to@Email.com"
@@ -68,7 +68,8 @@ emailRecord = Email(emailId, emailToAddress, emailFromAddress,
 # Get current email records and add Email record to list
 emailList = []
 emailList = utilities.readFromBinaryFileToEmailList(
-    '../../webapp/data/emails.bin')
+    '../../webapp/data/emails.bin',
+    emailList)
 emailList.append(emailRecord)
 
 # Write the updated Email List to bin file
@@ -78,11 +79,11 @@ utilities.writeToBinaryFileFromEmailList('../../webapp/data/emails.bin')
 # TODO: Add To, From and subject from Email variable
 #################################### Create new Log Record ########################################
 # Create and Add Log record
-logCount = utilities.readListCount('../../webapp/data/logs.bin')
+logCount = utilities.getLogListCount('../../webapp/data/logs.bin')
 logCount += 1
 logId = logCount
 logDate = date.today()
-logTime = time.strftime('%H:%M:%S')
+logTime = "11:32"
 logTo = "user@group35.com"
 logFrom = "admin@group35.com"
 logSubject = "Please meet in boardroom at 1PM"
