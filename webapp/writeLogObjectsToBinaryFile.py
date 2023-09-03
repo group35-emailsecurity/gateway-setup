@@ -1,3 +1,4 @@
+import json
 import os
 import pickle
 from models.log import Log
@@ -10,7 +11,7 @@ def displayAllLogRecords(filePath):
     else:
         #Display list of log records saved
         for log in logList:
-            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " " + log.action
+            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " "  +  log.type + " " + log.action
             print(logOutput)
 
 def writeToBinaryFileFromLogList(writeBinFilePath, writeLogList):
@@ -95,8 +96,9 @@ def addLogRecord(filePath):
             logFrom = input("Please enter from address: ")
             logSubject = input("Please enter email subject: ")
             logMessage = input("Please enter enter log message: ")
+            logType = input("Please enter enter log type: ")
             logAction = input("Please enter the action taken: ")
-            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logAction)
+            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logType, logAction)
             logList.append(newLog)
             userInput = str(input("Please press 'Y' to add ANOTHER log record: "))
         else:
@@ -104,6 +106,46 @@ def addLogRecord(filePath):
     
         #Write new log records to bin file
         writeToBinaryFileFromLogList(filePath, logList)
+
+def getLogListActionCount(filePath):
+    logList = readFromBinaryFileToLogList(filePath)
+    actionList = {"Task" : "Total emails","Allowed" : 0, "Blocked" : 0}
+
+    if(logList != []):
+        #Count records stored in bin file
+        for log in logList:
+            if (log.action == "Allowed"):
+                # Append to allowed list
+                actionList["Allowed"] += 1
+            else:
+                # Append to blocked list
+                actionList["Blocked"] += 1
+    
+    #print(actionList)
+    return actionList
+
+def getLogListTypeCount(filePath):
+    logList = readFromBinaryFileToLogList(filePath)
+    typeList = {"Task" : "Threats found", "Safe": 0, "Virus" : 0, "Spam" : 0, "Phishing" : 0}
+
+    if(logList != []):
+        #Count records stored in bin file
+        for log in logList:
+            if (log.type.lower() == "safe"):
+                # Append to safe list
+                typeList["Safe"] += 1
+            elif(log.type.lower() == "virus"):
+                # Append to virus list
+                typeList["Virus"] += 1
+            elif(log.type.lower() == "spam"):
+                # Append to spam list
+                typeList["Spam"] += 1
+            elif(log.type.lower() == "phishing"):
+                # Append to phishing list
+                typeList["Phishing"] += 1
+    
+    #print(typeList)
+    return typeList
 
 #readFromBinaryFileToLogList('data/logs.bin')
 #displayAllLogRecords('/data/logs.bin')

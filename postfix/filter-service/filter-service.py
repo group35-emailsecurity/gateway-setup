@@ -17,9 +17,11 @@ from email import policy
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
 # Exit code 1: Threat detected. This exit code will result in the email being discarded.
 
+
 class Outcome(Enum):
     ALLOWED = 0
     DENIED = 1
+
 
 emailStr = sys.stdin.read()
 

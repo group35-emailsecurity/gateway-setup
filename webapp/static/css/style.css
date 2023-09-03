@@ -1,4 +1,86 @@
 /* Custom CSS styling for Email and Log table pages*/ 
+
+/*Header*/
+
+
+/*Changing the colour of DataTables Text*/
+div.dataTables_wrapper{ 
+    color: #ddd;
+}
+
+
+
+#header-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 50px;
+    background-color:#8fb258 ;
+    padding: 0 px;
+ }
+
+#header-text {
+    color: #192b33;
+    margin-right: 0px;
+    margin-left: 0px;
+    text-align: left;
+    justify-self: end;
+    align-self: center;
+}
+
+#header-logo {
+    display: block;
+    width: 150px;
+    max-width: 100%;
+    height: 145px;
+    justify-self: center;
+    align-self: stretch;
+}
+
+/*Navigation Menu*/
+#menu ul{
+	list-style:none;
+	padding: 15px;;
+
+}
+
+#menu li{
+	list-style:none;
+	padding: 50px;;
+	display:inline;
+}
+
+#menu li a{
+	color:#8fb258;
+	text-align:center;
+	font-size:20px;
+	font-weight:bold;
+	padding:0 25px 0 25px;
+}#menu ul {
+    list-style: none;
+    padding: 15px;
+}
+
+#menu li {
+    list-style: none;
+    padding: 50px;
+    display: inline;
+}
+
+#menu li a {
+    color: #8fb258;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 25px 0 25px;
+    text-decoration: none; /* Remove underlines from links */
+}
+
+#menu li a:hover {
+    color: #6c8744; /* Change link color on hover */
+}
+
+
+
 table{
     padding: 10px;
 }
@@ -40,6 +122,18 @@ h3{
     justify-content: center;
     align-items: center;
     min-height: 100vh; 
+}
+
+#Dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 50px;
+    margin: 0px 50px 0px 50px;
+    background-color:white ;
+    padding: 15 px;
+    border: 6px solid #8fb258;
+    border-radius: 10px;
+    justify-self: center;
 }
 
 #login-container {
@@ -102,7 +196,7 @@ h3{
     color: #777;
 }
 
-footer {
+#footer {
     width: 100%;
     background: #000000;
     color: #ffffff;

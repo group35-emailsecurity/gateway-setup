@@ -19,3 +19,9 @@ smtpd_recipient_restrictions =
     permit_mynetworks,
     reject_unauth_destination,
     check_policy_service unix:private/policyd-spf
+
+# DKIM settings
+milter_default_action = accept
+milter_protocol = 2
+smtpd_milters = inet:localhost:8891
+non_smtpd_milters = inet:localhost:8891

@@ -1,0 +1,5 @@
+Domain                  internal.test
+KeyFile                 /etc/postfix/dkim.key
+Selector                mail
+SOCKET                  inet:8891@localhost
+InternalHosts           <INTERNAL_SERVER_IP_ADDRESS>, 127.0.0.1

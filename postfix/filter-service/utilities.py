@@ -11,7 +11,7 @@ def displayAllLogRecords(filePath):
     else:
         #Display list of log records saved
         for log in logList:
-            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " " + log.action
+            logOutput = str(log.id) +  " " + log.date + " " + log.time + " " + log.toAddress + " " + log.fromAddress + " " + log.subject +  " " + log.message + " "  + log.type + " " + log.action
             print(logOutput)
 
 def writeToBinaryFileFromLogList(writeBinFilePath, writeLogList):
@@ -95,9 +95,10 @@ def addLogRecord(filePath):
             logTo = input("Please enter to address: ")
             logFrom = input("Please enter from address: ")
             logSubject = input("Please enter email subject: ")
-            logMessage = input("Please enter enter log message: ")
+            logMessage = input("Please enter log message: ")
+            logType = input("Please enter log type: ")
             logAction = input("Please enter the action taken: ")
-            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logAction)
+            newLog = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, logType, logAction)
             logList.append(newLog)
             userInput = str(input("Please press 'Y' to add ANOTHER log record: "))
         else:
@@ -211,7 +212,6 @@ def addEmailRecord(filePath):
 
         #Write new email records to bin file
         writeToBinaryFileFromEmailList(filePath, emailList)
-
 
 #readFromBinaryFileToEmailList('../../webapp/data/emails.bin')
 #displayAllEmailRecords('../../webapp/data/emails.bin')
