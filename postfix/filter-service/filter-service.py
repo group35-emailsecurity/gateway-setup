@@ -47,26 +47,34 @@ exitCode = Outcome.ALLOWED.value
 regex = r'@(.*)'
 if re.findall(regex, emailFromAddress)[0] == "internal.test":
     # Encrypt outgoing emails
+    protectedKeywordList = ["secret", "confidential", "private"]
+    
+    # Protected Keyword scanning
+    for keyword in protectedKeywordList:
+        if re.search(keyword, emailStr, re.IGNORECASE):
+            # Give the email a new body, overwriting the old one
+            newBody = "Encrypted message attached"
+            emailObj.set_content(newBody)
 
-    # Give the email a new body, overwriting the old one
-    newBody = "Encrypted message attached"
-    emailObj.set_content(newBody)
+            # Pipe oldBody into gpg symmetric, save encrypted.gpg file
+            filename = "encrypted.gpg"
+            gpgPassphrase = "open"
+            run(['gpg', '--output', filename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
 
-    # Pipe oldBody into gpg symmetric, save encrypted.gpg file
-    filename = "encrypted.gpg"
-    gpgPassphrase = "open"
-    run(['gpg', '--output', filename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
+            # Get encrypted.gpg file
+            with open(f'/home/user/{filename}', 'rb') as file:
+                data = file.read()
 
-    # Get encrypted.gpg file
-    with open(f'/home/user/{filename}', 'rb') as file:
-        data = file.read()
+            # Attach encrypted.gpg to email
+            emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename=filename)
 
-    # Attach encrypted.gpg to email
-    emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename=filename)
-
-    # Overwrite the original email with the new version
-    with open('/home/user/temp-email-file.tmp', 'w') as file:
-        file.write(emailObj.as_string())
+            # Overwrite the original email with the new version
+            with open('/home/user/temp-email-file.tmp', 'w') as file:
+                file.write(emailObj.as_string())
+            
+            logMessage = "The word %s was found in the email. Encrypting outgoing email." % keyword
+            break
+    
 else:
     print("inbound email that needs to be scanned")
     keywordBlacklist = ["casino", "lottery", "viagra"]
@@ -133,9 +141,6 @@ else:
     # Write the updated Log List to bin file
     utilities.writeToBinaryFileFromLogList('../../webapp/data/logs.bin', logList)
     #################################### Create new Log Record ########################################
-
-    
-    
     
 print(logMessage)
 
