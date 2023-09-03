@@ -11,9 +11,7 @@ def displayAllEmailRecords(filePath):
     else:
         # Display list of email records saved
         for email in emailList:
-            emailOutput = str(email.id) + " " + email.toAddress + " " + \
-                email.fromAddress + " " + email.subject + " " + email.body
-            print(emailOutput)
+            print(email)
 
 
 def writeToBinaryFileFromEmailList(writeBinFilePath, writeEmailList):
