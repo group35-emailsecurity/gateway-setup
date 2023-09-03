@@ -13,3 +13,6 @@ class Email:
         self.subject = subject
         self.body = body
         self.originalEmail = originalEmail
+
+    def __str__(self):
+        return " ".join([str(self.id), self.toAddress, self.fromAddress, self.subject, self.body])

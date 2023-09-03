@@ -11,9 +11,7 @@ def displayAllEmailRecords(filePath):
     else:
         # Display list of email records saved
         for email in emailList:
-            emailOutput = str(email.id) + " " + email.toAddress + " " + \
-                email.fromAddress + " " + email.subject + " " + email.body
-            print(emailOutput)
+            print(email)
 
 
 def writeToBinaryFileFromEmailList(writeBinFilePath, writeEmailList):
@@ -24,10 +22,10 @@ def writeToBinaryFileFromEmailList(writeBinFilePath, writeEmailList):
             with open(writeBinFilePath, "wb") as f:
                 pickle.dump(writeEmailList, f)
         else:
-            doesDirectoryExist = os.path.exists(writeBinFilePath)
+            newDirectory = os.path.dirname(writeBinFilePath)
+            doesDirectoryExist = os.path.exists(newDirectory)
             if not doesDirectoryExist:
                 print("Directory does NOT exist")
-                newDirectory = os.path.dirname(writeBinFilePath)
                 os.makedirs(newDirectory)
                 print("Directory has been created")
 
@@ -51,23 +49,6 @@ def readFromBinaryFileToEmailList(readBinFilePath):
             # Open binary file using pickle
             with open(readBinFilePath, "rb") as f:
                 readEmailList = pickle.load(f)
-
-        return readEmailList
-    else:
-        newDirectory = os.path.dirname(readBinFilePath)
-        doesDirectoryExist = os.path.exists(newDirectory)
-        if not doesDirectoryExist:
-            print("Directory does NOT exist")
-            os.makedirs(newDirectory)
-            print("Directory has been created")
-
-        print("File does NOT exist")
-        print("Creating new empty bin file")
-
-        file = open(readBinFilePath, "x")
-        file.close()
-
-        print("New empty bin file created")
 
     return readEmailList
 
