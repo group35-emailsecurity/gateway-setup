@@ -43,10 +43,12 @@ domainRegex = r'@(.*)'
 if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
     # Outbound emails logic
     # Keyword list scanning for outgoing emails
-    logMessage = "The outgoing email did not contain any sensitive content."
+    logMessage = "OUTBOUND: No encryption required. No sensitive words detected."
     protectedKeywordList = ["secret", "confidential", "private"]
     for keyword in protectedKeywordList:
         if re.search(keyword, emailBody, re.IGNORECASE):
+            logMessage = "OUTBOUND: Encrypting email. Sensitive word '%s' detected." % keyword
+            
             # Give the email a new body, overwriting the old one
             newBody = "Encrypted message attached"
             emailObj.set_content(newBody)
@@ -67,22 +69,21 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
             with open('/home/user/temp-email-file.tmp', 'w') as file:
                 file.write(emailObj.as_string())
             
-            logMessage = "The word %s was found in the email. Encrypting outgoing email." % keyword
+
             break
 
 else:
-    #Inbound emails logic
-    print("inbound email that needs to be scanned")
+    # Inbound emails logic
     keywordBlacklist = ["casino", "lottery", "viagra"]
     emailOutcome = Outcome.ALLOWED.name
-    logMessage = "The email body did not contain any suspicious words."
+    logMessage = "INBOUND: Email allowed. No suspicious words or attachments detected."
 
     # Keyword scanning
     for keyword in keywordBlacklist:
         if re.search(keyword, emailStr, re.IGNORECASE):
             emailOutcome = Outcome.DENIED.name
             exitCode = Outcome.DENIED.value
-            logMessage = "The word %s was found in the email." % keyword
+            logMessage = "INBOUND: Email denied. Suspicious word '%s' detected." % keyword
             break
 
     # Attachment scanning
@@ -95,7 +96,7 @@ else:
     if infectedCount != "0":
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
-        logMessage = "Infected attachment detected"
+        logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
     # Create and Add Email record
     emailCount = utilities.getEmailListCount('../../webapp/data/emails.bin')
