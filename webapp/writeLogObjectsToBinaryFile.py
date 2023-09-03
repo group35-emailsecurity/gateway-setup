@@ -51,22 +51,6 @@ def readFromBinaryFileToLogList(readBinFilePath):
             with open(readBinFilePath, "rb") as f:
                 readLogList = pickle.load(f)
 
-    else:
-        newDirectory = os.path.dirname(readBinFilePath)
-        doesDirectoryExist = os.path.exists(newDirectory)
-        if not doesDirectoryExist:
-            print("Directory does NOT exist")
-            os.makedirs(newDirectory)
-            print("Directory has been created")
-
-        print("File does NOT exist")
-        print("Creating new empty bin file")
-
-        file = open(readBinFilePath, "x")
-        file.close()
-
-        print("New empty bin file created")
-
     return readLogList
 
 
