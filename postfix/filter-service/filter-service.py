@@ -46,7 +46,27 @@ exitCode = Outcome.ALLOWED.value
 
 regex = r'@(.*)'
 if re.findall(regex, emailFromAddress)[0] == "internal.test":
-    print("outbound email that needs to be encrypted")
+    # Encrypt outgoing emails
+
+    # Give the email a new body, overwriting the old one
+    newBody = "Encrypted message attached"
+    emailObj.set_content(newBody)
+
+    # Pipe oldBody into gpg symmetric, save encrypted.gpg file
+    filename = "encrypted.gpg"
+    gpgPassphrase = "open"
+    run(['gpg', '--output', filename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
+
+    # Get encrypted.gpg file
+    with open(f'/home/user/{filename}', 'rb') as file:
+        data = file.read()
+
+    # Attach encrypted.gpg to email
+    emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename=filename)
+
+    # Overwrite the original email with the new version
+    with open('/home/user/temp-email-file.tmp', 'w') as file:
+        file.write(emailObj.as_string())
 else:
     print("inbound email that needs to be scanned")
     keywordBlacklist = ["casino", "lottery", "viagra"]
