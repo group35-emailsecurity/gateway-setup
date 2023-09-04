@@ -213,3 +213,25 @@ h3{
 p{
     color:#ddd;
 }
+
+/* Policy Webpage */
+
+#policy-container {
+    margin: 50px 50px 0px 50px;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border: 2px solid #8FB258;
+    border-radius: 10px;
+    text-align: left; /* Align text to the left */
+}
+
+#policy-container h2 {
+    color: #333333; /* Darker text color for headings */
+    margin-top: 15px; /* Add space above headings */
+}
+
+#policy-container p {
+    color: #555555; /* Slightly lighter text color for paragraphs */
+    margin-top: 10px; /* Add space above paragraphs */
+    line-height: 1.4; /* Increase line height for better readability */
+}
