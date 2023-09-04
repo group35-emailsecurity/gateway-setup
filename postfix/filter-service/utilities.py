@@ -177,9 +177,14 @@ def addEmailRecord(filePath):
             emailFromAddress = input("Please enter email from address: ")
             emailSubject = input("Please enter email subject: ")
             emailBody = input("Please enter email body: ")
+            emailOriginal = input("Please input original email: ")
 
-            newEmail = Email(emailId, emailToAddress,
-                             emailFromAddress, emailSubject, emailBody)
+            newEmail = Email(emailId,
+                             emailToAddress,
+                             emailFromAddress,
+                             emailSubject,
+                             emailBody,
+                             emailOriginal)
             emailList.append(newEmail)
             userInput = str(
                 input("Please press 'Y' to add ANOTHER email object: "))
