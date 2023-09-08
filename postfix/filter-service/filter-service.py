@@ -2,6 +2,7 @@
 import email
 import re
 import sys
+import os
 import re
 import utilities
 from models.email import Email
@@ -43,7 +44,7 @@ domainRegex = r'@(.*)'
 if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
     # Outbound emails logic
     # Keyword list scanning for outgoing emails
-    logMessage = "OUTBOUND: No encryption required. No sensitive words detected."
+    logMessage = "OUTBOUND: No email encryption required. No sensitive words detected."
     protectedKeywordList = ["secret", "confidential", "private"]
     for keyword in protectedKeywordList:
         if re.search(keyword, emailBody, re.IGNORECASE):
@@ -98,6 +99,9 @@ else:
         exitCode = Outcome.DENIED.value
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
+    # Make room for printing logMessage in postfix log by toggling off print() calls from utilities module
+    sys.stdout = open(os.devnull, 'w')
+
     # Create and Add Email record
     emailCount = utilities.getEmailListCount('/opt/webapp/data/emails.bin')
     emailCount += 1
@@ -138,6 +142,9 @@ else:
     # Write the updated Log List to bin file
     utilities.writeToBinaryFileFromLogList('/opt/webapp/data/logs.bin', logList)
     #################################### Create new Log Record ########################################
+
+    # Toggle on print() calls so logMessage will print in postfix log
+    sys.stdout = sys.__stdout__
     
 print(logMessage)
 
