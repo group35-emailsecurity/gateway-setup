@@ -99,7 +99,7 @@ else:
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
     # Create and Add Email record
-    emailCount = utilities.getEmailListCount('../../webapp/data/emails.bin')
+    emailCount = utilities.getEmailListCount('/opt/webapp/data/emails.bin')
     emailCount += 1
     emailId = emailCount
 
@@ -108,17 +108,17 @@ else:
 
     # Get current email records and add Email record to list
     emailList = []
-    emailList = utilities.readFromBinaryFileToEmailList('../../webapp/data/emails.bin', emailList)
+    emailList = utilities.readFromBinaryFileToEmailList('/opt/webapp/data/emails.bin')
     emailList.append(emailRecord)
 
     # Write the updated Email List to bin file
-    utilities.writeToBinaryFileFromEmailList('../../webapp/data/emails.bin')
+    utilities.writeToBinaryFileFromEmailList('/opt/webapp/data/emails.bin', emailList)
     #################################### Create email record   ########################################
 
     # TODO: Add To, From and subject from Email variable
     #################################### Create new Log Record ########################################
     # Create and Add Log record
-    logCount = utilities.getLogListCount('../../webapp/data/logs.bin')
+    logCount = utilities.getLogListCount('/opt/webapp/data/logs.bin')
     logCount += 1
     logId = logCount
     logDate = date.today()
@@ -128,15 +128,15 @@ else:
     logSubject = "Please meet in boardroom at 1PM"
 
     # Create Log object
-    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, emailOutcome)
+    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, "threat-type", emailOutcome)
 
     # Get current log records and add Log record to list
     logList = []
-    logList = utilities.readFromBinaryFileToLogList('../../webapp/data/logs.bin')
+    logList = utilities.readFromBinaryFileToLogList('/opt/webapp/data/logs.bin')
     logList.append(logRecord)
 
     # Write the updated Log List to bin file
-    utilities.writeToBinaryFileFromLogList('../../webapp/data/logs.bin', logList)
+    utilities.writeToBinaryFileFromLogList('/opt/webapp/data/logs.bin', logList)
     #################################### Create new Log Record ########################################
     
 print(logMessage)

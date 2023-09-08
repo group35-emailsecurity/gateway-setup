@@ -17,11 +17,9 @@
 - Create user: `sudo adduser user && sudo adduser user sudo`  
 - Login as user.  
 - Clone this repository somewhere inside the 'home' directory.  
-- Edit the transport-maps file to include the IP address of the internal and external servers (replace \<INTERNAL SERVER IP ADDRESS> with the IP address of the internal server. Retain the square brackets. Do the same for the IP address of the external server.)  
-- Enter the 'postfix' directory: `cd postfix`  
 - Make the setup.sh script executable: `chmod +x setup.sh`  
 - Run the setup.sh script with elevated privileges: `sudo ./setup.sh`  
-- Postfix will install or reinstall. Choose the 'Internet Site' option, and enter 'gateway.test' as the domain.  
+- Required software will install or reinstall. Choose the 'Internet Site' option, and enter 'gateway.test' as the domain.  
 - The gateway should now be set up.  
 - Run `sudo tail -f /var/log/mail.log` to view the live gateway Postfix log.
 
@@ -32,7 +30,6 @@
 - Create user: `sudo adduser user && sudo adduser user sudo`  
 - Login as user.  
 - Install Postfix: `sudo apt install postfix`. Choose the 'Internet Site' option, and enter 'external.test' as the domain.  
-- Ensure emails sent from the external server to the internal server are routed through the gateway server by adding the following line to the /etc/hosts file: `<GATEWAY SERVER IP ADDRESS>    internal.test` (where \<GATEWAY SERVER IP ADDRESS> is the IP address of the gateway server).  
 - Open Claws Mail and configure as follows: Email address should be user@external.test. Server type should be 'Local mbox file'. SMTP server address should be 'internal.test'.  
 
 ## Configure Internal server
@@ -41,7 +38,6 @@
 - Create user1: `sudo adduser user1 && sudo adduser user1 sudo`  
 - Login as user1.   
 - Install Postfix: `sudo apt install postfix`. Choose the 'Internet Site' option, and enter 'internal.test' as the domain.  
-- Ensure emails sent from the internal server to the external server are routed through the gateway server by adding the following line to the /etc/hosts file: `<GATEWAY SERVER IP ADDRESS>    external.test` (where \<GATEWAY SERVER IP ADDRESS> is the IP address of the gateway server).  
 - Open Claws Mail and configure as follows:  Email address should be user1@internal.test. Server type should be 'Local mbox file'. SMTP server address should be 'external.test'.  
 
 ## Send emails from External server
