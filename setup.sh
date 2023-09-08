@@ -70,6 +70,9 @@ service opendkim start
 # Copy webapp to opt directory
 cp -r ./webapp /opt
 
+# Set ownership to write to binary files
+chown -R user /opt/webapp/data/
+
 # Reboot
 s=10
 for i in $(seq $s -1 1); do
