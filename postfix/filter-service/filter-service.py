@@ -99,7 +99,7 @@ else:
         exitCode = Outcome.DENIED.value
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
-    # Make room for printing logMessage in postfix log by toggling off print() calls from utilities module
+    # Toggle off print() calls from utilities module to make room for printing logMessage in postfix log
     sys.stdout = open(os.devnull, 'w')
 
     # Create and Add Email record
