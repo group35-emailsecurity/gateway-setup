@@ -37,6 +37,7 @@
   <table id="emailtable" class="table table-hover table-dark">
     <thead>
     <tr>
+      <th></th> <!-- Blank header to add Childrows -->
       {% for header in headings %}
         <th>{{header}}</th>
       {% endfor%}
@@ -45,6 +46,7 @@
   <tbody>
       {% for row in emailData %}
       <tr>
+        <td></td> <!-- Blank Column to add Childrows -->
         <td>{{row.id}}</td>
         <td>{{row.toAddress}}</td>
         <td>{{row.fromAddress}}</td>

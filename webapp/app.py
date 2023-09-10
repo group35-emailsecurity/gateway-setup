@@ -30,6 +30,10 @@ def emails():
     headings = ("ID", "To", "From", "Subject", "Body", "Open")
     emailData = writeEmailObjectsToBinaryFile.readFromBinaryFileToEmailList(
         'data/emails.bin')
+    
+    
+
+
     return render_template('emails.html', emailData=emailData, headings=headings)
 
 
