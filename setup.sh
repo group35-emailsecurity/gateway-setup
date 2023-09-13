@@ -74,8 +74,7 @@ cp -r ./webapp /opt
 chown -R user /opt/webapp/data/
 
 # Reboot
-s=10
-for i in $(seq $s -1 1); do
+for i in {10..1}; do
     echo "Rebooting in $i";
     sleep 1;
 done;

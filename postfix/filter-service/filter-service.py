@@ -5,10 +5,9 @@ import sys
 import os
 import re
 import utilities
+import datetime
 from models.email import Email
 from models.log import Log
-from datetime import date
-from datetime import time
 from enum import Enum
 from subprocess import run
 from email import policy
@@ -125,11 +124,11 @@ else:
     logCount = utilities.getLogListCount('/opt/webapp/data/logs.bin')
     logCount += 1
     logId = logCount
-    logDate = date.today()
-    logTime = "11:32"
-    logTo = "user@group35.com"
-    logFrom = "admin@group35.com"
-    logSubject = "Please meet in boardroom at 1PM"
+    logDate = datetime.datetime.now().strftime("%d-%m-%Y")
+    logTime = datetime.datetime.now().strftime("%H:%M")
+    logTo = emailToAddress
+    logFrom = emailFromAddress
+    logSubject = emailSubject
 
     # Create Log object
     logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, "threat-type", emailOutcome)
