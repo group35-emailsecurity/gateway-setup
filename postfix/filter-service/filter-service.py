@@ -20,6 +20,10 @@ class Outcome(Enum):
     ALLOWED = 0
     DENIED = 1
 
+class ThreatType(Enum):
+    SPAM_PHISHING = "spam_phishing"
+    VIRUS_MALWARE = "virus_malware"
+
 # Raw email in string format
 emailStr = sys.stdin.read()
 
@@ -76,6 +80,7 @@ else:
     # Inbound emails logic
     keywordBlacklist = ["casino", "lottery", "viagra"]
     emailOutcome = Outcome.ALLOWED.name
+    threatType = None
     logMessage = "INBOUND: Email allowed. No suspicious words or attachments detected."
 
     # Keyword scanning
@@ -83,6 +88,7 @@ else:
         if re.search(keyword, emailStr, re.IGNORECASE):
             emailOutcome = Outcome.DENIED.name
             exitCode = Outcome.DENIED.value
+            threatType = ThreatType.SPAM_PHISHING
             logMessage = "INBOUND: Email denied. Suspicious word '%s' detected." % keyword
             break
 
@@ -96,6 +102,7 @@ else:
     if infectedCount != "0":
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
+        threatType = ThreatType.VIRUS_MALWARE
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
     # Toggle off print() calls from utilities module to make room for printing logMessage in postfix log
@@ -131,7 +138,7 @@ else:
     logSubject = emailSubject
 
     # Create Log object
-    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, "threat-type", emailOutcome)
+    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, threatType, emailOutcome)
 
     # Get current log records and add Log record to list
     logList = []
