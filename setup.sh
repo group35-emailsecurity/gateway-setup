@@ -74,9 +74,10 @@ cp -r ./webapp /opt
 chown -R user /opt/webapp/data/
 
 # Reboot
-for i in {10..1}; do
-    echo "Rebooting in $i";
-    sleep 1;
-done;
+for i in {10..1}
+do
+    echo "Rebooting in $i"
+    sleep 1
+done
 
 reboot
