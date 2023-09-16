@@ -3,6 +3,8 @@ import email
 import re
 import sys
 import re
+import random
+import string
 import utilities
 from models.email import Email
 from models.log import Log
@@ -15,6 +17,9 @@ from email import policy
 # This script must return an exit code of 0 or 1
 # Exit code 0: No threat detected. This exit code will result in the email being delivered to the intended recipient.
 # Exit code 1: Threat detected. This exit code will result in the email being discarded.
+
+# Generate random string to facilitate synchronous filter service operations
+randomChars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=32))
 
 class Outcome(Enum):
     ALLOWED = 0
@@ -53,23 +58,26 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
             newBody = "Encrypted message attached"
             emailObj.set_content(newBody)
 
-            # Pipe oldBody into gpg and save symetrically encrypted 'encrypted.gpg' file
-            filename = "encrypted.gpg"
+            # Pipe oldBody into gpg and save symetrically encrypted file that will be attached to the email
+            encryptedAttachmentPath = f'/home/user/encrypted-{randomChars}.gpg'
             gpgPassphrase = "open"
-            run(['gpg', '--output', filename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
+            run(['gpg', '--output', encryptedAttachmentPath, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], input=emailBody, text=True)
 
-            # Get encrypted.gpg file
-            with open(f'/home/user/{filename}', 'rb') as file:
+            # Get encrypted file
+            with open(encryptedAttachmentPath, 'rb') as file:
                 data = file.read()
 
-            # Attach encrypted.gpg to email
-            emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename=filename)
+            # Attach encrypted file to email
+            emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename="encrypted.gpg")
 
             # Overwrite the original email with the new version. New version will be piped back into postfix via filter-handler.sh for delivery
-            with open('/home/user/temp-email-file.tmp', 'w') as file:
+            emailFilePath = sys.argv[1]
+            with open(emailFilePath, 'w') as file:
                 file.write(emailObj.as_string())
-            
 
+            # Delete encrypted file
+            run(['rm', encryptedAttachmentPath])
+            
             break
 
 else:
@@ -87,10 +95,10 @@ else:
             break
 
     # Attachment scanning
-    homeDir = "/home/user/"
-    run(['ripmime', '-i', '-', '-d', 'attachments/'], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
-    scanResult = run(['clamdscan', '--stream', 'attachments/'], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
-    run(['rm', '-r', 'attachments/'], cwd=homeDir)  # Delete extracted attachments
+    attachmentsDirectoryPath = f'/home/user/attachments-{randomChars}/'
+    run(['ripmime', '-i', '-', '-d', attachmentsDirectoryPath], input=emailStr, text=True)  # Extract attachments
+    scanResult = run(['clamdscan', '--stream', attachmentsDirectoryPath], capture_output=True, text=True).stdout  # Scan attachments
+    run(['rm', '-r', attachmentsDirectoryPath])  # Delete extracted attachments directory
     infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
 
     if infectedCount != "0":
