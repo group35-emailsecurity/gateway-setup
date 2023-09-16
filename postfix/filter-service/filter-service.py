@@ -88,7 +88,7 @@ else:
         if re.search(keyword, emailStr, re.IGNORECASE):
             emailOutcome = Outcome.DENIED.name
             exitCode = Outcome.DENIED.value
-            threatType = ThreatType.SPAM_PHISHING
+            threatType = ThreatType.SPAM_PHISHING.value
             logMessage = "INBOUND: Email denied. Suspicious word '%s' detected." % keyword
             break
 
@@ -102,7 +102,7 @@ else:
     if infectedCount != "0":
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
-        threatType = ThreatType.VIRUS_MALWARE
+        threatType = ThreatType.VIRUS_MALWARE.value
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
     # Toggle off print() calls from utilities module to make room for printing logMessage in postfix log
