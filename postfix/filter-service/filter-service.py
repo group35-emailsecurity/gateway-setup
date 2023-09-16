@@ -59,20 +59,23 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
             emailObj.set_content(newBody)
 
             # Pipe oldBody into gpg and save symetrically encrypted file
-            filename = f'encrypted-{randomChars}.gpg'
+            encryptedFilename = f'encrypted-{randomChars}.gpg'
             gpgPassphrase = "open"
-            run(['gpg', '--output', filename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
+            run(['gpg', '--output', encryptedFilename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
 
             # Get encrypted file
-            with open(f'/home/user/{filename}', 'rb') as file:
+            with open(f'/home/user/{encryptedFilename}', 'rb') as file:
                 data = file.read()
 
+            # Delete encrypted file
+            run(['rm', '-r', f'/home/user/{encryptedFilename}'])
+
             # Attach encrypted file to email
-            emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename="encrypted-content.gpg")
+            emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename="encrypted.gpg")
 
             # Overwrite the original email with the new version. New version will be piped back into postfix via filter-handler.sh for delivery
-            emailFile = sys.argv[1]
-            with open(f'/home/user/{emailFile}', 'w') as file:
+            emailFilePath = sys.argv[1]
+            with open(emailFilePath, 'w') as file:
                 file.write(emailObj.as_string())
             
             break
