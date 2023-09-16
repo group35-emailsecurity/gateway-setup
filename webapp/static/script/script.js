@@ -1,5 +1,18 @@
+function format(d) {
+  // `d` is the original data object for the row
+  return (
+    '<tr>' +
+        '<td>Email Body:</td>' +
+        '<td>' + d["5"] + '</td>'+
+      '</tr>'
+  );
+}
+
+
+
 $(document).ready(function() {
-  if ($('#emailtable')) {
+
+  if ($('#logtable')) {
   var table = $('#emailtable').DataTable({
       
     info: true,
@@ -7,44 +20,51 @@ $(document).ready(function() {
     paging: true,
     searching: true,
     
-        "columns": [                //Read a DOM sourced table into data objects:
-          { data: "id" },
+        "columns": [  //Read a DOM sourced table into data objects
+        {
+            className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: ''
+        },
+        { data: "id" },   
           { data: "to" },
           { data: "from" },
           { data: "subject" },
-          { data: "body",
-          render: function (data, type, row) {     
-            var color = 'black';
-            if (data === 'Hello this is a test email') {
-              color = '#62F5BC';
-            }
-            else if (data != 'a')
-            color = '#f53d50';
-            return '<span style="color:' + color + '">' + data + '</span>';
-          } }
+          { "visible": false, "targets": 5 },  //Hiding the body column
+          { data: "open"},
       ],
-
-  
-        
-      
-
-
   });
-}
-} );
 
+// Add event listener for opening and closing details
+  table.on('click', 'td.dt-control', function (e) {
+    let tr = e.target.closest('tr');
+    let row = table.row(tr);
+ 
+    if (row.child.isShown()) {
+        // This row is already open - close it
+        row.child.hide();
+    }
+    else {
+        // Open this row
+        row.child(format(row.data())).show();
+    }
+});
 
+  }
+
+});
 
 
 $(document).ready(function() {
   if ($('#logtable')) {
   var logtable = $('#logtable').DataTable({
-      
+
     info: true,
     ordering: true,
     paging: true,
     searching: true,
-    
+
         "columns": [                //Read a DOM sourced table into data objects:
           { data: "id" },
           { data: "date" },
@@ -53,7 +73,7 @@ $(document).ready(function() {
           { data: "from" },
           { data: "subject" },
           { data: "message" },
-          { data: "type" },         
+          { data: "type" },
           { data: "Action",
           render: function (data, type, row) { //Checks what value is in Action and Assigns colour
             var color = 'black';
@@ -65,7 +85,7 @@ $(document).ready(function() {
             return '<span style="color:' + color + '">' + data + '</span>';
           } }
       ],
-  
+
 
   });
 }

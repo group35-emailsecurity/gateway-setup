@@ -30,6 +30,10 @@ def emails():
     headings = ("ID", "To", "From", "Subject", "Body", "Open")
     emailData = writeEmailObjectsToBinaryFile.readFromBinaryFileToEmailList(
         'data/emails.bin')
+    
+    
+
+
     return render_template('emails.html', emailData=emailData, headings=headings)
 
 
@@ -46,6 +50,9 @@ def logs():
 def login():
     return render_template('login.html')
 
+@app.route('/privacypolicy')
+def privacypolicy():
+    return render_template('privacypolicy.html')
 
 @app.route('/displayEmail/<id>')
 def displayEmail(id):

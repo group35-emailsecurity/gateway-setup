@@ -235,3 +235,39 @@ p{
     margin-top: 10px; /* Add space above paragraphs */
     line-height: 1.4; /* Increase line height for better readability */
 }
+
+.close-button2 {
+    display: inline-block;
+    padding: 10px 20px; /* Adjust padding*/
+    background-color: #8FB258; /* Button background color */
+    color: #fff; /* Button text color */
+    text-decoration: none;
+    border: 1px solid #192b33; /* Button border */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+/* Hover effect - change background color on hover */
+.close-button2:hover {
+    background-color: #4d632a; 
+    border: 1px solid #152125; 
+    color: #fff;
+}
+
+/* CSS for close button"X" on the top right corner */
+/* .close-button1 {
+    display: inline-block;
+    padding: 5px 10px; 
+    background-color: #b5c59a; 
+    color: #35431f; 
+    text-decoration: none;
+    border: 1px solid #192b33; 
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+    float: right;
+} */
+/* Hover effect - change background color on hover */
+/* .close-button1:hover {
+    background-color: #4d632a;
+    border: 1px solid #152125; 
+    color: #fff;
+} */
