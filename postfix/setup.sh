@@ -21,7 +21,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Install packages
-apt -y install postfix postfix-policyd-spf-python opendkim opendkim-tools ripmime clamav &&
+apt -y install postfix postfix-policyd-spf-python opendkim opendkim-tools ripmime clamav-daemon &&
 
 # Copy files required for the destination relay to work
 cp transport-maps relay-recipient-maps /etc/postfix &&
@@ -66,6 +66,10 @@ postfix reload &&
 
 # Start opendkim
 service opendkim start
+
+# Enable and start clamav daemon
+systemctl enable clamav-daemon
+systemctl start clamav-daemon
 
 # Reboot
 s=10

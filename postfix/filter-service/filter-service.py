@@ -97,7 +97,7 @@ else:
     # Attachment scanning
     attachmentsDirectoryPath = f'/home/user/attachments-{randomChars}/'
     run(['ripmime', '-i', '-', '-d', attachmentsDirectoryPath], input=emailStr, text=True)  # Extract attachments
-    scanResult = run(['clamscan', attachmentsDirectoryPath], capture_output=True, text=True).stdout  # Scan attachments
+    scanResult = run(['clamdscan', '--stream', attachmentsDirectoryPath], capture_output=True, text=True).stdout  # Scan attachments
     run(['rm', '-r', attachmentsDirectoryPath])  # Delete extracted attachments directory
     infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
 
