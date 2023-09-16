@@ -50,6 +50,9 @@ def logs():
 def login():
     return render_template('login.html')
 
+@app.route('/privacypolicy')
+def privacypolicy():
+    return render_template('privacypolicy.html')
 
 @app.route('/displayEmail/<id>')
 def displayEmail(id):
