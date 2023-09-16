@@ -23,6 +23,7 @@ class Outcome(Enum):
 class ThreatType(Enum):
     SPAM_PHISHING = "spam_phishing"
     VIRUS_MALWARE = "virus_malware"
+    NO_THREAT = "no_threat"
 
 # Raw email in string format
 emailStr = sys.stdin.read()
@@ -80,7 +81,7 @@ else:
     # Inbound emails logic
     keywordBlacklist = ["casino", "lottery", "viagra"]
     emailOutcome = Outcome.ALLOWED.name
-    threatType = None
+    threatType = ThreatType.NO_THREAT.value
     logMessage = "INBOUND: Email allowed. No suspicious words or attachments detected."
 
     # Keyword scanning
