@@ -58,17 +58,14 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
             newBody = "Encrypted message attached"
             emailObj.set_content(newBody)
 
-            # Pipe oldBody into gpg and save symetrically encrypted file
-            encryptedFilename = f'encrypted-{randomChars}.gpg'
+            # Pipe oldBody into gpg and save symetrically encrypted file that will be attached to the email
+            encryptedAttachmentPath = f'/home/user/encrypted-{randomChars}.gpg'
             gpgPassphrase = "open"
-            run(['gpg', '--output', encryptedFilename, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], cwd='/home/user/', input=emailBody, text=True)
+            run(['gpg', '--output', encryptedAttachmentPath, '--symmetric', '--passphrase', gpgPassphrase, '--batch', '--yes'], input=emailBody, text=True)
 
             # Get encrypted file
-            with open(f'/home/user/{encryptedFilename}', 'rb') as file:
+            with open(encryptedAttachmentPath, 'rb') as file:
                 data = file.read()
-
-            # Delete encrypted file
-            run(['rm', f'/home/user/{encryptedFilename}'])
 
             # Attach encrypted file to email
             emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename="encrypted.gpg")
@@ -77,6 +74,9 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
             emailFilePath = sys.argv[1]
             with open(emailFilePath, 'w') as file:
                 file.write(emailObj.as_string())
+
+            # Delete encrypted file
+            run(['rm', encryptedAttachmentPath])
             
             break
 
@@ -95,11 +95,10 @@ else:
             break
 
     # Attachment scanning
-    homeDir = "/home/user/"
-    workingDir = f'attachments-{randomChars}/'
-    run(['ripmime', '-i', '-', '-d', workingDir], cwd=homeDir, input=emailStr, text=True)  # Extract attachments
-    scanResult = run(['clamscan', workingDir], cwd=homeDir, capture_output=True, text=True).stdout  # Scan attachments
-    run(['rm', '-r', workingDir], cwd=homeDir)  # Delete extracted attachments
+    attachmentsDirectoryPath = f'/home/user/attachments-{randomChars}/'
+    run(['ripmime', '-i', '-', '-d', attachmentsDirectoryPath], input=emailStr, text=True)  # Extract attachments
+    scanResult = run(['clamscan', attachmentsDirectoryPath], capture_output=True, text=True).stdout  # Scan attachments
+    run(['rm', '-r', attachmentsDirectoryPath])  # Delete extracted attachments directory
     infectedCount = re.findall(r'Infected files: (.+)', scanResult)[0]  # Get infected attachment count
 
     if infectedCount != "0":
