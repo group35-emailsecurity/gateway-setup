@@ -68,7 +68,7 @@ if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
                 data = file.read()
 
             # Delete encrypted file
-            run(['rm', '-r', f'/home/user/{encryptedFilename}'])
+            run(['rm', f'/home/user/{encryptedFilename}'])
 
             # Attach encrypted file to email
             emailObj.add_attachment(data, maintype='application', subtype='octet-stream', filename="encrypted.gpg")
