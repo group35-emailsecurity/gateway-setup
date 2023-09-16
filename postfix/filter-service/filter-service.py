@@ -2,14 +2,14 @@
 import email
 import re
 import sys
+import os
 import re
 import random
 import string
 import utilities
+import datetime
 from models.email import Email
 from models.log import Log
-from datetime import date
-from datetime import time
 from enum import Enum
 from subprocess import run
 from email import policy
@@ -24,6 +24,11 @@ randomChars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=3
 class Outcome(Enum):
     ALLOWED = 0
     DENIED = 1
+
+class ThreatType(Enum):
+    SPAM_PHISHING = "spam_phishing"
+    VIRUS_MALWARE = "virus_malware"
+    NO_THREAT = "no_threat"
 
 # Raw email in string format
 emailStr = sys.stdin.read()
@@ -48,7 +53,7 @@ domainRegex = r'@(.*)'
 if re.findall(domainRegex, emailFromAddress)[0] == "internal.test":
     # Outbound emails logic
     # Keyword list scanning for outgoing emails
-    logMessage = "OUTBOUND: No encryption required. No sensitive words detected."
+    logMessage = "OUTBOUND: No email encryption required. No sensitive words detected."
     protectedKeywordList = ["secret", "confidential", "private"]
     for keyword in protectedKeywordList:
         if re.search(keyword, emailBody, re.IGNORECASE):
@@ -84,6 +89,7 @@ else:
     # Inbound emails logic
     keywordBlacklist = ["casino", "lottery", "viagra"]
     emailOutcome = Outcome.ALLOWED.name
+    threatType = ThreatType.NO_THREAT.value
     logMessage = "INBOUND: Email allowed. No suspicious words or attachments detected."
 
     # Keyword scanning
@@ -91,6 +97,7 @@ else:
         if re.search(keyword, emailStr, re.IGNORECASE):
             emailOutcome = Outcome.DENIED.name
             exitCode = Outcome.DENIED.value
+            threatType = ThreatType.SPAM_PHISHING.value
             logMessage = "INBOUND: Email denied. Suspicious word '%s' detected." % keyword
             break
 
@@ -104,10 +111,14 @@ else:
     if infectedCount != "0":
         emailOutcome = Outcome.DENIED.name
         exitCode = Outcome.DENIED.value
+        threatType = ThreatType.VIRUS_MALWARE.value
         logMessage = "INBOUND: Email denied. Suspicious attachment detected."
 
+    # Toggle off print() calls from utilities module to make room for printing logMessage in postfix log
+    sys.stdout = open(os.devnull, 'w')
+
     # Create and Add Email record
-    emailCount = utilities.getEmailListCount('../../webapp/data/emails.bin')
+    emailCount = utilities.getEmailListCount('/opt/webapp/data/emails.bin')
     emailCount += 1
     emailId = emailCount
 
@@ -116,36 +127,39 @@ else:
 
     # Get current email records and add Email record to list
     emailList = []
-    emailList = utilities.readFromBinaryFileToEmailList('../../webapp/data/emails.bin', emailList)
+    emailList = utilities.readFromBinaryFileToEmailList('/opt/webapp/data/emails.bin')
     emailList.append(emailRecord)
 
     # Write the updated Email List to bin file
-    utilities.writeToBinaryFileFromEmailList('../../webapp/data/emails.bin')
+    utilities.writeToBinaryFileFromEmailList('/opt/webapp/data/emails.bin', emailList)
     #################################### Create email record   ########################################
 
     # TODO: Add To, From and subject from Email variable
     #################################### Create new Log Record ########################################
     # Create and Add Log record
-    logCount = utilities.getLogListCount('../../webapp/data/logs.bin')
+    logCount = utilities.getLogListCount('/opt/webapp/data/logs.bin')
     logCount += 1
     logId = logCount
-    logDate = date.today()
-    logTime = "11:32"
-    logTo = "user@group35.com"
-    logFrom = "admin@group35.com"
-    logSubject = "Please meet in boardroom at 1PM"
+    logDate = datetime.datetime.now().strftime("%d-%m-%Y")
+    logTime = datetime.datetime.now().strftime("%H:%M")
+    logTo = emailToAddress
+    logFrom = emailFromAddress
+    logSubject = emailSubject
 
     # Create Log object
-    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, emailOutcome)
+    logRecord = Log(logId, logDate, logTime, logTo, logFrom, logSubject, logMessage, threatType, emailOutcome)
 
     # Get current log records and add Log record to list
     logList = []
-    logList = utilities.readFromBinaryFileToLogList('../../webapp/data/logs.bin')
+    logList = utilities.readFromBinaryFileToLogList('/opt/webapp/data/logs.bin')
     logList.append(logRecord)
 
     # Write the updated Log List to bin file
-    utilities.writeToBinaryFileFromLogList('../../webapp/data/logs.bin', logList)
+    utilities.writeToBinaryFileFromLogList('/opt/webapp/data/logs.bin', logList)
     #################################### Create new Log Record ########################################
+
+    # Toggle on print() calls so logMessage will print in postfix log
+    sys.stdout = sys.__stdout__
     
 print(logMessage)
 
