@@ -1,2 +1,0 @@
-internal.test smtp:[<INTERNAL_SERVER_IP_ADDRESS>]:25
-external.test smtp:[<EXTERNAL_SERVER_IP_ADDRESS>]:25
